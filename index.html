@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POSTUREVIDE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #2d2d2d;
+            background: #fafafa;
+        }
+        html { scroll-behavior: smooth; }
+        
+        /* Nav menu (hamburger) */
+        .nav-menu {
+            position: absolute;
+            top: 70px;
+            right: 40px;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            display: none;
+            min-width: 220px;
+            z-index: 1100;
+        }
+        .nav-menu.open { display: block; }
+        .nav-menu a {
+            display: block;
+            padding: 12px 18px;
+            color: #2d2d2d;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .nav-menu a:hover { background: #f5f5f0; }
+        
+        /* Header/Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #2d2d2d;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .nav-icons button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #2d2d2d;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-icons button:hover {
+            opacity: 0.6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 90vh;
+            align-items: center;
+        }
+        
+        .hero-content {
+            padding: 80px;
+            background: #f5f5f0;
+        }
+        
+        .tag {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8b8b8b;
+            margin-bottom: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            font-weight: 300;
+            color: #2d2d2d;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #6b6b6b;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #2d2d2d;
+            color: white;
+            padding: 18px 40px;
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        
+        .cta-button:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
+        
+        .hero-image {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), 
+                        url('Captura de pantalla 2025-10-25 130118.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+        }
+        
+        /* Content Sections */
+        .section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 80px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+        
+        .section-number {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8b8b8b;
+        }
+        
+        .section h2 {
+            font-size: 48px;
+            font-weight: 300;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+        
+        .section-content {
+            max-width: 900px;
+            margin-left: auto;
+        }
+        
+        .text-block {
+            margin-bottom: 40px;
+        }
+        
+        .text-block h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #2d2d2d;
+        }
+        
+        .text-block p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #6b6b6b;
+            margin-bottom: 15px;
+        }
+
+        .text-block ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .text-block li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #6b6b6b;
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .text-block li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #2d2d2d;
+            font-weight: bold;
+        }
+        
+        /* Grid Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border: 1px solid #e8e8e8;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: #2d2d2d;
+            transform: translateY(-5px);
+        }
+        
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .card h4 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: #8b8b8b;
+            line-height: 1.6;
+        }
+        
+        /* Table */
+        .table-container {
+            background: white;
+            border: 1px solid #e8e8e8;
+            margin: 50px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f5f5f0;
+            padding: 25px 30px;
+            text-align: left;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        td {
+            padding: 30px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+            color: #6b6b6b;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Image Gallery */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 50px 0;
+        }
+        
+        .image-item {
+            aspect-ratio: 4/3;
+            background: #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #8b8b8b;
+            border: 1px solid #e8e8e8;
+        }
+
+        /* Gallery Images */
+        .gallery-container {
+            margin: 40px 0;
+        }
+        
+        .gallery-item {
+            margin-bottom: 40px;
+            background: white;
+            border: 1px solid #e8e8e8;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .gallery-item h4 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: #2d2d2d;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            background: #fafafa;
+        }
+
+        /* Video Container */
+        .video-container {
+            margin: 40px 0;
+            background: white;
+            border: 1px solid #e8e8e8;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .video-container:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Split Section */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin: 50px 0;
+        }
+        
+        .split-item {
+            background: white;
+            padding: 50px;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .split-item h4 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 25px;
+        }
+        
+        .split-item ul {
+            list-style: none;
+        }
+        
+        .split-item li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #6b6b6b;
+            font-size: 15px;
+        }
+        
+        .split-item li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2d2d2d;
+            color: white;
+            padding: 80px;
+            margin-top: 100px;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section p {
+            color: #a8a8a8;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #a8a8a8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-content {
+                padding: 60px 40px;
+            }
+            
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .section {
+                padding: 60px 40px;
+            }
+            
+            .navbar {
+                padding: 20px 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .split-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+            }
+            
+            .section h2 {
+                font-size: 32px;
+                margin-top: 20px;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item {
+                padding: 20px;
+            }
+            
+            .gallery-item img {
+                max-height: 300px;
+            }
+            
+            .video-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Posture Vide</div>
+        <div class="nav-icons">
+            <button onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+        </div>
+        <div id="menu" class="nav-menu">
+            <a href="#intro">Introducción</a>
+            <a href="#desarrollo">Desarrollo</a>
+            <a href="#validacion">Validación</a>
+            <a href="#resultados">Evaluación</a>
+            <a href="#conclusiones">Conclusiones</a>
+            <a href="#anexos">Anexos</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <p class="tag">Proyecto  | Bienestar y Salud</p>
+            <h1>Posture Vide</h1>
+            <p class="hero-subtitle">
+                Un corrector con sensores diseñado para mejorar los hábitos posturales 
+                de estudiantes y programadores, promoviendo una ergonomía saludable 
+                frente al computador.
+            </p>
+            <a href="#intro" class="cta-button">Ver informe</a>
+        </div>
+        <div class="hero-image"></div>
+    </section>
+
+    <!-- Introducción -->
+    <section class="section" id="intro">
+        <div class="section-header">
+            <p class="section-number">01</p>
+            <h2>Introducción</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Problemática Identificada</h3>
+                <p>
+                    En la era digital actual, <strong>estudiantes y profesionales</strong> pasan entre 
+                    6 a 12 horas diarias frente a dispositivos digitales. Esta exposición prolongada 
+                    genera consecuencias directas en la salud:
+                </p>
+                <ul>
+                    <li><strong>Dolor cervical y lumbar</strong> por posturas inadecuadas</li>
+                    <li><strong>Fatiga visual</strong> y síndrome de ojo seco</li>
+                    <li><strong>Tensión muscular</strong> en hombros y cuello</li>
+                    <li><strong>Reducción de la productividad</strong> por molestias físicas</li>
+                </ul>
+            </div>
+
+            <div class="text-block">
+                <h3>Nuestra Propuesta de Solución</h3>
+                <p>
+                    <strong>Posture Vide</strong> es un dispositivo inteligente diseñado específicamente 
+                    para el entorno académico y profesional. Integra sensores de última generación 
+                    que monitorean continuamente la postura del usuario, proporcionando:
+                </p>
+                <ul>
+                    <li><strong>Alertas discretas</strong> cuando se detectan malas posturas</li>
+                    <li><strong>Monitoreo en tiempo real</strong> de la ergonomía corporal</li>
+                    <li><strong>Diseño no invasivo</strong> que se adapta al flujo de trabajo</li>
+                    <li><strong>Tecnología accesible</strong> para uso cotidiano</li>
+                </ul>
+            </div>
+
+            <div class="text-block">
+                <h3>Objetivo del Prototipado</h3>
+                <p>
+                    Este proceso de prototipado tiene como finalidad <strong>validar la viabilidad técnica 
+                    y la aceptación del usuario</strong>. A través de iteraciones controladas, evaluamos:
+                </p>
+                <ul>
+                    <li><strong>Comodidad y ergonomía</strong> del dispositivo durante uso prolongado</li>
+                    <li><strong>Efectividad de las alertas</strong> sin interrumpir la concentración</li>
+                    <li><strong>Integración natural</strong> en el entorno de trabajo o estudio</li>
+                    <li><strong>Feedback del usuario</strong> para mejoras iterativas</li>
+                </ul>
+            </div>
+
+            <div class="text-block">
+                <h3>Impacto Esperado</h3>
+                <p>
+                    Con <strong>Posture Vide</strong>, buscamos generar un cambio positivo en los hábitos 
+                    posturales, contribuyendo a la <strong>prevención de lesiones musculoesqueléticas</strong> 
+                    y mejorando la calidad de vida de estudiantes y profesionales del sector tecnológico.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Desarrollo del Prototipo -->
+    <section class="section" id="desarrollo">
+        <div class="section-header">
+            <p class="section-number">02</p>
+            <h2>Desarrollo del Prototipo</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Tipo de Prototipo Elegido</h3>
+                <p>
+                    Se desarrolló un prototipo mixto: boceto en papel para la forma y estructura,
+                    y modelo digital en <em>Tinkercad</em> para visualizar la posición de los sensores. 
+                    Esta combinación permitió identificar proporciones adecuadas y posibles 
+                    limitaciones de espacio antes de la fabricación física.
+                </p>
+            </div>
+
+            <div class="text-block">
+                <h3>Objetivo del Prototipo</h3>
+                <p>
+                    El objetivo fue probar la <strong>comodidad, tamaño y funcionalidad básica</strong> 
+                    del corrector, enfocándose en la interacción física entre el usuario y el dispositivo.
+                </p>
+            </div>
+
+            <div class="text-block">
+                <h3>Iteraciones</h3>
+                <p>
+                    Durante las pruebas iniciales, se ajustaron aspectos como el tamaño del sensor 
+                    y la posición de los puntos de contacto. Las observaciones de los usuarios 
+                    permitieron redefinir los materiales y proyectar una versión más compacta 
+                    para la siguiente etapa.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proceso de Validación -->
+    <section class="section" id="validacion">
+        <div class="section-header">
+            <p class="section-number">03</p>
+            <h2>Proceso de Validación con el Usuario</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Público Objetivo</h3>
+                <p>
+                    La validación se realizó con <strong>cuatro estudiantes de la carrera de Diseño 
+                    y Desarrollo de Software</strong>, quienes representan el perfil ideal del usuario: 
+                    personas que pasan mucho tiempo frente a una pantalla y buscan soluciones sencillas 
+                    para cuidar su postura y bienestar.
+                </p>
+            </div>
+
+            <div class="text-block">
+                <h3>Método de Validación</h3>
+                <p>
+                    Se emplearon <strong>entrevistas semi-estructuradas</strong> para obtener opiniones 
+                    sinceras sobre el uso del prototipo. Los participantes comentaron sobre la comodidad, 
+                    visibilidad del dispositivo y el modo de alerta más adecuado.
+                </p>
+            </div>
+
+            <div class="split-section">
+                <div class="split-item">
+                    <h4>Malla Receptora de Información</h4>
+                    <ul>
+                        <li><strong>Observaciones:</strong> idea útil y práctica para el día a día.</li>
+                        <li><strong>Críticas:</strong> el tamaño podría reducirse para mayor discreción.</li>
+                        <li><strong>Preguntas:</strong> ¿el aviso será por vibración o sonido?</li>
+                        <li><strong>Nuevas ideas:</strong> agregar conexión con una app móvil.</li>
+                    </ul>
+                </div>
+
+                <div class="split-item">
+                    <h4>Valoración Promedio (Escala 1-5)</h4>
+                    <ul>
+                        <li>Eficacia: 4</li>
+                        <li>Eficiencia: 4</li>
+                        <li>Utilidad: 4</li>
+                        <li>Satisfacción: 4</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Evaluación -->
+    <section class="section" id="resultados">
+        <div class="section-header">
+            <p class="section-number">04</p>
+            <h2>Evaluación de la Propuesta de Solución</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Análisis Cualitativo</h3>
+                <p>
+                    Los usuarios percibieron <strong>Posture Vide</strong> como un producto accesible 
+                    y funcional, destacando su sencillez y utilidad cotidiana. Las entrevistas reflejaron 
+                    una recepción positiva hacia la idea de un sistema de aviso discreto para mejorar 
+                    los hábitos posturales.
+                </p>
+            </div>
+
+            <div class="text-block">
+                <h3>Reflexión</h3>
+                <p>
+                    El proceso de validación permitió detectar que, aunque la propuesta es sólida, 
+                    el reto principal radica en el diseño físico: miniaturizar componentes y garantizar 
+                    un ensamblaje cómodo sin sacrificar la calidad. Estos aprendizajes fortalecen la 
+                    visión iterativa del proyecto.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusiones -->
+    <section class="section" id="conclusiones">
+        <div class="section-header">
+            <p class="section-number">05</p>
+            <h2>Conclusiones y Recomendaciones</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Reflexión Final</h3>
+                <p>
+                    Posture Vide reafirma la importancia de diseñar desde la experiencia del usuario. 
+                    El prototipado permitió evidenciar los puntos de mejora antes de avanzar a una versión 
+                    final, confirmando el valor del aprendizaje iterativo.
+                </p>
+            </div>
+
+            <div class="text-block">
+                <h3>Sugerencias para Futuras Iteraciones</h3>
+                <ul>
+                    <li>Reducir el tamaño de los sensores sin afectar su precisión.</li>
+                    <li>Optimizar la forma de aviso (vibración o luz) para hacerlo más natural.</li>
+                    <li>Explorar materiales ergonómicos que se adapten mejor al cuerpo.</li>
+                    <li>Considerar integración con una app para seguimiento postural.</li>
+                </ul>
+            </div>
+
+            <div class="text-block">
+                <h3>Importancia del Ciclo Iterativo</h3>
+                <p>
+                    Cada fase del diseño centrado en el usuario permite acercar el producto 
+                    a las verdaderas necesidades del público objetivo. Iterar no solo corrige errores, 
+                    sino que refina la experiencia y genera innovación significativa.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Anexos -->
+    <section class="section" id="anexos">
+        <div class="section-header">
+            <p class="section-number">06</p>
+            <h2>Anexos</h2>
+        </div>
+
+        <div class="section-content">
+            <div class="text-block">
+                <h3>Galería</h3>
+                <p>Imágenes del desarrollo del prototipo Posture Vide</p>
+                
+                <div class="gallery-container">
+                    <div class="gallery-item">
+                        <h4>Prototipo Final</h4>
+                        <img src="ChatGPT Image 29 oct 2025, 08_00_35 p.m..png" alt="Imagen del prototipo final de Posture Vide">
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <h4>Modelo en Tinkercad</h4>
+                        <img src="image.png" alt="Imagen del prototipo en Tinkercad mostrando la estructura y componentes">
+                    </div>
+
+                    <div class="gallery-item">
+                        <h4>Modelo de prototipo en fisico</h4>
+                        <img src="impres.jpg" alt="Imagen del prototipo en Tinkercad mostrando la estructura y componentes">
+                    </div>
+                    <div class="gallery-item">
+                        <h4>Dibujo de prototipo</h4>
+                        <img src="Captura de pantalla 2025-10-30 224053.png" alt="Imagen del prototipo en Tinkercad mostrando la estructura y componentes">
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-block">
+                <h3>Video de Entrevista</h3>
+                <p>Entrevista con usuarios sobre la experiencia de uso del prototipo Posture Vide</p>
+                <p>Url: <strong>https://www.youtube.com/embed/VGCtwfIW_Cw</strong></p>
+                
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/VGCtwfIW_Cw" 
+                                title="Entrevista - Prototipo Posture Vide" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </section>
+
+    <script>
+        // Menú hamburguesa mejorado
+        const menuBtn = document.querySelector('.nav-icons button');
+        const navMenu = document.getElementById('menu');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+
+        // Toggle menu
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                navMenu.classList.remove('open');
+            }
+        });
+
+        // Smooth scrolling para los enlaces de navegación
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 80; // Ajuste para navbar fijo
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
